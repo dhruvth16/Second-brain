@@ -4,6 +4,7 @@ import { userSignin, userSignup, logout } from '../controllers/user.controller'
 import { addContent, deletContent, getContent } from '../controllers/content.controller'
 import { authMiddleware } from "../middleware/auth.middleware";
 import { Request } from 'express';
+import { createBrainLink, getBrainLink } from '../controllers/link.controller';
 
 interface CustomRequest extends Request {
   userId?: string;
@@ -19,3 +20,5 @@ router.post('/content', authMiddleware, addContent)
 router.get('/content', authMiddleware, getContent)
 router.delete('/content-delete', authMiddleware, deletContent)
 router.get('/logout', authMiddleware, logout)
+router.post('/brain', authMiddleware, createBrainLink)
+router.get('/brain/:brainlink', getBrainLink)

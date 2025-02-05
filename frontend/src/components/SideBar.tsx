@@ -31,7 +31,7 @@ const SideBar = (props: SideBarProps) => {
         </div>
       </main>
       <Link className="absolute bottom-1 cursor-pointer" to="/logout">
-        <button className="mt-5 text-gray-700 p-2 rounded-md flex items-center gap-2">
+        <button className="text-xl text-red-600 p-2 rounded-md flex items-center gap-2">
           Logout{" "}
           <h3>
             <i className="ri-logout-circle-r-line"></i>

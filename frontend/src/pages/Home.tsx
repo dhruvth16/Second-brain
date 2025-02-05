@@ -3,18 +3,21 @@ import "../App.css";
 import "remixicon/fonts/remixicon.css";
 import Button from "../components/Button";
 import Card from "../components/Card";
-// import { useNavigate } from "react-router-dom";
-import { useEffect, useRef, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import AddContent from "../components/AddContent";
 import gsap from "gsap";
-// import { useEffect } from "react";
-// import axios from "axios";
+import { ContentDataContext } from "../context/ContentDataContext";
+
+interface Content {
+  title: string;
+  type: string;
+  content: string;
+}
 
 function Home() {
-  //   const [content, setContent] = useState([]);
   const [content, setContent] = useState(false);
-  //   const navigate = useNavigate();
   const contentRef = useRef(null);
+  const { contentData } = useContext(ContentDataContext);
 
   useEffect(() => {
     if (content && contentRef.current) {
@@ -32,19 +35,13 @@ function Home() {
     }
   }, [content]);
 
-  // useEffect(() => {
-  //     const fetchContent = async () => {
-  //         const response = axios.post(`${import.meta.env.VITE_BASE_URL}/content`, {
-  //             link,
-  //             title,
-  //             type
-  //         })
-  //     }
-  // },[])
-
   return (
     <>
-      <div className="h-screen w-full flex relative">
+      <div
+        className={`h-screen w-full flex relative ${
+          content ? "bg-slate-400 opacity-40 blur-[2px]" : ""
+        }`}
+      >
         <div className="w-[20%] border-r-[1px] border-gray-300 h-screen p-4">
           <SideBar
             title="Second Brain"
@@ -64,7 +61,6 @@ function Home() {
               <Button
                 onClick={() => {
                   setContent(true);
-                  console.log(content);
                 }}
                 variant="primary"
                 text="Add Content"
@@ -74,6 +70,18 @@ function Home() {
             </div>
           </nav>
           <div className="flex flex-wrap gap-5 mt-10">
+            {contentData.map((content: Content, index: number) => (
+              <Card
+                key={index}
+                title={content.title}
+                titeIcon={<i className="ri-file-add-line"></i>}
+                subTitle={content.type}
+                body={content.content}
+                date="02/02/2025"
+                shareIcon={<i className="ri-share-line"></i>}
+                deleteIcon={<i className="ri-delete-bin-line"></i>}
+              />
+            ))}
             <Card
               title="Project Ideas"
               titeIcon={<i className="ri-file-add-line"></i>}
@@ -85,9 +93,8 @@ function Home() {
             />
           </div>
         </div>
-
-        <AddContent contentRef={contentRef} setContent={setContent} />
       </div>
+      <AddContent contentRef={contentRef} setContent={setContent} />
     </>
   );
 }

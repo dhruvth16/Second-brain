@@ -1,8 +1,9 @@
 import { Link, useNavigate } from "react-router-dom";
-import { inputVariants } from "./LoginPage";
 import { useContext, useState } from "react";
 import axios from "axios";
 import { UserDataContext } from "../context/UserDataContext";
+import { Input } from "../components/Input";
+import Button from "../components/Button";
 
 const RegisterPage = () => {
   // two - way binding
@@ -63,40 +64,36 @@ const RegisterPage = () => {
             />
           </h1>
           <div className="flex flex-col items-center justify-center bg-[#e6edfc] p-6 rounded-md w-[500px]">
-            <input
-              onChange={(e) => setEmail(e.target.value)}
+            <Input
               value={email}
+              setValue={setEmail}
               type="email"
               placeholder="Email"
-              className={inputVariants}
             />
-            <input
-              onChange={(e) => setFirstname(e.target.value)}
-              value={firstname}
-              type="text"
-              placeholder="Firstname"
-              className={inputVariants}
-            />
-            <input
-              onChange={(e) => setLastname(e.target.value)}
-              value={lastname}
-              type="text"
-              placeholder="Lastname"
-              className={inputVariants}
-            />
-            <input
-              onChange={(e) => setPassword(e.target.value)}
+            <Input
               value={password}
+              setValue={setPassword}
               type="password"
               placeholder="Password"
-              className={inputVariants}
             />
-            <button
+            <Input
+              value={firstname}
+              setValue={setFirstname}
+              type="text"
+              placeholder="Firstname"
+            />
+            <Input
+              value={lastname}
+              setValue={setLastname}
+              type="text"
+              placeholder="Lastname"
+            />
+            <Button
               onClick={registerUser}
-              className="bg-[#5046E2] text-white px-4 py-2 mt-4 rounded-md cursor-pointer"
-            >
-              Register
-            </button>
+              variant="tertiary"
+              text="Register"
+              size="lg"
+            />
           </div>
           <p className="text-left w-[500px] mt-2">
             Already registered?{" "}

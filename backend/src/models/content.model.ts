@@ -8,7 +8,7 @@ const ContentSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    body: {
+    content: {
         type: String
     },
     type: {
@@ -20,7 +20,7 @@ const ContentSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: "Tag"
     }],
-    ceratedAt: {
+    createdAt: {
         type: Date,
     },
     userId: {

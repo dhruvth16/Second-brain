@@ -1,10 +1,9 @@
 import { ContentModel } from "../models/content.model";
 import { Request, Response } from 'express';
 import { z } from 'zod'
+import { CustomRequest } from "../interfaces/requestInterface/CustomRequest";
 
-interface CustomRequest extends Request {
-    userId?: string;
-}
+
 
 export const addContent = async (req: CustomRequest, res: Response): Promise<void> => {
     const userId = req.userId;
@@ -22,18 +21,20 @@ export const addContent = async (req: CustomRequest, res: Response): Promise<voi
         });
     }
 
-    const { link, title, type } = req.body;
+    const { link , title, type, content, createdAt } = req.body;
     try {
-        const content = await ContentModel.create({
+        const contentData = await ContentModel.create({
             link,
             title,
             type,
+            content,
+            createdAt,
             userId
         })
 
         res.status(201).json({
             message: "Content added successfully",
-            content
+            contentData
         })
     } catch (error) {
         console.log(error)

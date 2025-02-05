@@ -1,5 +1,9 @@
-import { useState } from "react";
 import { inputVariants } from "../pages/LoginPage";
+import axios from "axios";
+import { ContentDataContext } from "../context/ContentDataContext";
+import { Input } from "./Input";
+import { useContext, useState } from "react";
+import Button from "./Button";
 
 interface AddContentProps {
   contentRef: React.MutableRefObject<null>;
@@ -7,10 +11,46 @@ interface AddContentProps {
 }
 
 const AddContent: React.FC<AddContentProps> = (props) => {
-  const [tittle, setTitle] = useState("");
+  const [title, setTitle] = useState("");
   const [link, setLink] = useState("");
   const [content, setContent] = useState("");
   const [type, setType] = useState("");
+  const [date, setDate] = useState(
+    () => new Date().toISOString().split("T")[0]
+  );
+  const { setContentData } = useContext(ContentDataContext);
+
+  const emptyInputFields = () => {
+    setTitle("");
+    setLink("");
+    setContent("");
+    setType("");
+    setDate("");
+  };
+
+  const fetchContent = async () => {
+    try {
+      const response = await axios.post(
+        `${import.meta.env.VITE_BASE_URL}/content`,
+        {
+          link,
+          title,
+          type,
+          content,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        }
+      );
+      setContentData(response.data);
+      props.setContent(false);
+      emptyInputFields();
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   return (
     <>
@@ -24,37 +64,39 @@ const AddContent: React.FC<AddContentProps> = (props) => {
             <i
               onClick={() => {
                 props.setContent(false);
-                console.log("clicked");
               }}
               className="ri-close-line"
             ></i>
           </h2>
           <form
-            onClick={(e) => e.preventDefault()}
+            // onClick={(e) => e.preventDefault()}
             className="flex flex-col items-center justify-center"
           >
             <div className="flex flex-col gap-4 mt-4 w-full">
-              <input
-                value={tittle}
-                onChange={(e) => setTitle(e.target.value)}
-                type="text"
+              <Input
+                value={title}
+                setValue={setTitle}
                 placeholder="Title"
-                className={inputVariants}
-              />
-              <input
-                value={link}
-                onChange={(e) => setLink(e.target.value)}
                 type="text"
-                placeholder="Link"
-                className={inputVariants}
               />
+              <Input
+                value={link}
+                setValue={setLink}
+                placeholder="Link"
+                type="text"
+              />
+              <Input type="date" value={date} setValue={setDate} />
+
               <select
                 value={type}
-                onChange={(e) => setType(e.target.value)}
+                onChange={(e: React.ChangeEvent<HTMLSelectElement>) =>
+                  setType(e.target.value)
+                }
                 className={inputVariants}
                 name="type"
                 id="type"
               >
+                <option value="select an option">Choose one</option>
                 <option value="image">Image</option>
                 <option value="video">Video</option>
                 <option value="article">Article</option>
@@ -62,14 +104,19 @@ const AddContent: React.FC<AddContentProps> = (props) => {
               </select>
               <textarea
                 value={content}
-                onChange={(e) => setContent(e.target.value)}
+                onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) =>
+                  setContent(e.target.value)
+                }
                 placeholder="Content"
                 className={inputVariants}
               ></textarea>
-              <button className="bg-[#5046E2] text-white  px-4 py-2 cursor-pointer rounded-md text-lg flex items-center justify-center gap-2">
-                <i className="ri-add-line"></i>
-                Add Content
-              </button>
+              <Button
+                variant="tertiary"
+                text="Add Content"
+                size="lg"
+                onClick={fetchContent}
+                icon={<i className="ri-add-line"></i>}
+              />
             </div>
           </form>
         </div>

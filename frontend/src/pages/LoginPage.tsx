@@ -2,6 +2,8 @@ import axios from "axios";
 import { useContext, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { UserDataContext } from "../context/UserDataContext";
+import { Input } from "../components/Input";
+import Button from "../components/Button";
 
 export const inputVariants =
   "border outline-none w-full border-gray-300 rounded-md px-4 py-2 mt-4 bg-blue-50";
@@ -57,27 +59,24 @@ const LoginPage = () => {
             />
           </h1>
           <div className="flex flex-col items-center justify-center bg-[#e6edfc] p-6 rounded-md w-[500px]">
-            <input
-              onChange={(e) => setEmail(e.target.value)}
+            <Input
               value={email}
+              setValue={setEmail}
               type="email"
               placeholder="Email"
-              className={inputVariants}
             />
-            <input
+            <Input
               value={password}
-              onChange={(e) => setPassword(e.target.value)}
+              setValue={setPassword}
               type="password"
               placeholder="Password"
-              className={inputVariants}
             />
-            <Link
-              to="/home"
+            <Button
+              variant="tertiary"
+              text="Login"
+              size="lg"
               onClick={loginUser}
-              className="bg-[#5046E2] text-white px-4 py-2 mt-4 rounded-md cursor-pointer"
-            >
-              Login
-            </Link>
+            />
           </div>
           <p className="text-left w-[500px] mt-2">
             Don't have an account?{" "}

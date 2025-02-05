@@ -4,27 +4,10 @@ import { z } from 'zod'
 import bcrypt from 'bcrypt'
 import jwt from 'jsonwebtoken'
 import { ExpireToken } from '../models/expireToken.model';
-
-interface SigninRequest extends Request {
-    body: {
-        password: string;
-        email: string;
-    };
-}
-interface SigninResponse extends Response {}
-
-interface SignupRequest extends Request {
-    body: {
-        password: string;
-        email: string;
-        fullname: {
-            firstname: string;
-            lastname: string;
-        }
-    };
-}
-
-interface SignupResponse extends Response {}
+import { SignupRequest } from '../interfaces/requestInterface/SignupRequest';
+import { SigninRequest } from '../interfaces/requestInterface/SigninRequest';
+import { SigninResponse } from '../interfaces/responseInterface/SigninResponse';
+import { SignupResponse } from '../interfaces/responseInterface/SignupResponse';
 
 export const userSignup = async (req: SignupRequest, res: SignupResponse) => {
     const requiredBody = z.object({
